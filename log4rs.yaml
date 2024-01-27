@@ -1,0 +1,29 @@
+# Pattern: https://docs.rs/log4rs/*/log4rs/encode/pattern/index.html
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {M}:{m}{n}"
+    filters:
+      - kind: threshold
+        level: info
+  file:
+    kind: file
+    path: "/tmp/rust-c.file.log"
+    encoder:
+      pattern: "{d} - {m}{n}"
+      
+root:
+  level: info
+  appenders:
+    - stdout
+    - file
+
+loggers:
+  app::backend::db:
+    level: info
+  app::requests:
+    level: info
+    appenders:
+      - requests
+    additive: false

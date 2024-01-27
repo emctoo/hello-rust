@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="Go" enabled="true" />
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/wt/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/r/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/r/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/syn/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/syn/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/c/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/pinning/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/pinning/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/req/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/req/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tpl/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tpl/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ft/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ft/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/l/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/l/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

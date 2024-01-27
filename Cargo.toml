@@ -1,0 +1,35 @@
+[workspace]
+resolver = "2"
+members = ["wt", "syn", "r", "c", "tpl", "pinning", "req", "ft", "l", "sql"]
+# default-members = []
+
+# [package]
+# name = "hello-rust"
+# version = "0.1.0"
+# edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+#[dependencies]
+#tokio = { version = "1", features = ["full"] }
+## mini-redis = "0.4"
+#
+#log = "0.4"
+#env_logger = "0.10.0"
+#
+#bytes = "1"
+#
+## futures-util = "0.3.28"
+## futures = { version = "0.3", features = ["thread-pool"] }
+## futures-executor = "0.3"
+## futures-timer = "3"
+#
+#rand = "0.8"
+#
+## ssh2 = "0.9.4"
+## tokio-ssh2 = { git = "https://github.com/tyan-boot/tokio-ssh2", branch="master" }
+## openssh = { version = "0.9.9", features = ["native-mux"] }
+#
+#anyhow = "1.0.71"
+#
+## tokio-tungstenite = "0.18.0"
