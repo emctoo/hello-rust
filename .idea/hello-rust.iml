@@ -21,6 +21,9 @@
       <sourceFolder url="file://$MODULE_DIR$/ft/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/l/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/l/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sql/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sql/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ws/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
