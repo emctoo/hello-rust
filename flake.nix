@@ -53,12 +53,13 @@
         pkg-config
         openssl
 
-        self.packages.${system}.t
         cowsay
         ripgrep
         fzf
         # tmux
         watchexec
+
+        # self.packages.${system}.t
       ];
       # RUST_SRC_PATH = "${rustToolchain.${pkgs.system}.rust-src}/lib/rustlib/src/rust/library";
 
