@@ -1,0 +1,33 @@
+[package]
+name = "t"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+log = "*"
+# env_logger = "*"
+# pretty_env_logger = "*"
+
+tokio = { version = "1", features = ["full"] }
+# uuid = { version = "1.6.1", features = ["v4", "fast-rng", "macro-diagnostics"] }
+
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-appender = "0.2"
+chrono = "0.4"
+
+rand = "0.8"
+#[dependencies.uuid]
+#version = "1.6.1"
+#features = [
+#    "v4",                # Lets you generate random UUIDs
+#    "fast-rng",          # Use a faster (but still sufficiently random) RNG
+#    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDstracing = "0.1"
+#]
+#
+
+[lib]
+crate-type = ["cdylib"]

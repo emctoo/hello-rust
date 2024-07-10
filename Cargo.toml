@@ -1,6 +1,21 @@
 [workspace]
+members = [
+  "ws",
+  "wt",
+  "syn",
+  "r",
+  "t",       # tokio
+  "c",
+  "tpl",
+  "pinning",
+  "req",
+  "ft",
+  "l",
+  "sql",
+  "ssh",
+  "py",
+]
 resolver = "2"
-members = ["ws", "wt", "syn", "r", "c", "tpl", "pinning", "req", "ft", "l", "sql", "ssh"]
 # default-members = []
 
 # [package]

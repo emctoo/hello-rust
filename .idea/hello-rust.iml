@@ -24,6 +24,9 @@
       <sourceFolder url="file://$MODULE_DIR$/sql/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sql/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ws/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/py/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ssh/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ssh/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

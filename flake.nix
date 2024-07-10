@@ -1,73 +1,75 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
-    fenix = {
-      url = "github:nix-community/fenix";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    rust-overlay.url = "github:oxalica/rust-overlay";
+
+    # crane = {
+    #   url = "github:ipetkov/crane";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
+    systems.url = "github:nix-systems/default";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, fenix }:
-  let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-    rustToolchain = fenix.packages.${system}.minimal.toolchain;
-    rustPlatform = pkgs.makeRustPlatform {
-      cargo = rustToolchain;
-      rustc = rustToolchain;
-    };
+  outputs = {
+    self,
+    systems,
+    nixpkgs,
+    treefmt-nix,
+    ...
+  } @ inputs: let
+    eachSystem = f:
+      nixpkgs.lib.genAttrs (import systems) (
+        system:
+          f (import nixpkgs {
+            inherit system;
+            overlays = [inputs.rust-overlay.overlays.default];
+          })
+      );
+
+    rustToolchain = eachSystem (pkgs: pkgs.rust-bin.stable.latest);
+
+    treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
   in {
-    foo = "bar";
+    # You can use crane to build the Rust application with Nix
 
-    packages."${system}" = {
-      default = rustToolchain.minimal;
+    # packages = eachSystem (pkgs: let
+    #   craneLib = inputs.crane.lib.${pkgs.system};
+    # in {
+    #   default = craneLib.buildPackage {
+    #     src = craneLib.cleanCargoSource (craneLib.path ./.);
+    #   };
+    # });
 
-      t = rustPlatform.buildRustPackage {
-        pname = "t";
-        version = "0.1.0";
-        src = ./.;
-        cargoLock.lockFile = ./Cargo.lock;
-      };
+    devShells = eachSystem (pkgs: {
+      # Based on a discussion at https://github.com/oxalica/rust-overlay/issues/129
+      default = pkgs.mkShell (with pkgs; {
+        nativeBuildInputs = [
+          clang
+          # Use mold when we are runnning in Linux
+          (lib.optionals stdenv.isLinux mold)
+        ];
+        buildInputs = [
+          rustToolchain.${pkgs.system}.default
+          rust-analyzer-unwrapped
+          cargo
+          # pkg-config
+          # openssl
+        ];
+        RUST_SRC_PATH = "${
+          rustToolchain.${pkgs.system}.rust-src
+        }/lib/rustlib/src/rust/library";
+      });
+    });
 
-      # t =
-      #   with import nixpkgs { system = system; };
-      #   stdenv.mkDerivation {
-      #     name = "hello";
-      #     src = self;
-      #     buildPhase = "cargo build --release";
-      #     installPhase = "mkdir -p $out/bin; install -t $out/bin ./target/release/t";
-      #   };
-    };
+    formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
 
-    devShell."${system}" = pkgs.mkShell {
-      nativeBuildInputs = with pkgs; [
-        clang
-        # Use mold when we are runnning in Linux
-        # (lib.optionals stdenv.isLinux mold)
-      ];
-      buildInputs = with pkgs; [
-        # rustToolchain.${pkgs.system}.default
-        rust-analyzer-unwrapped
-        pkgs.cargo
-        pkgs.rustc
-        pkg-config
-        openssl
-
-        cowsay
-        ripgrep
-        fzf
-        # tmux
-        watchexec
-
-        # self.packages.${system}.t
-      ];
-      # RUST_SRC_PATH = "${rustToolchain.${pkgs.system}.rust-src}/lib/rustlib/src/rust/library";
-
-      shellHook = ''
-        export http_proxy=http://192.168.8.34:1081
-        echo 'Hello, world!'
-        # tmux new -s cli
-      '';
-    };
+    checks = eachSystem (pkgs: {
+      formatting = treefmtEval.${pkgs.system}.config.build.check self;
+    });
   };
 }
