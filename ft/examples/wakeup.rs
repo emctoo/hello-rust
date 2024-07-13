@@ -11,17 +11,25 @@ use tracing::info;
 
 #[tokio::main]
 async fn main() {
-    tracing_subscriber::fmt::fmt()
-        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
-        .init();
+    // tracing_subscriber::fmt::fmt()
+    //     .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+    //     .init();
+    console_subscriber::init(); // run `tokio-console` in a different terminal, run this with
+                                // RUST_LOG=wakeup=debug
 
-    let timer = TimerFuture::new(Duration::from_secs(3));
+    let timer = TimerFuture::new(Duration::from_secs(5));
     info!("- timer created");
 
-    info!("- sleeping");
-    tokio::time::sleep(Duration::from_secs(1)).await;
-    info!("- sleep is done");
+    // 考虑下面折中写法，不使用 select! 宏，sleep 几秒钟，然后再 await timer
+    // 会 poll 一次，pending
+    // 然后会等到 thread 中的 sleep 结束了，再 poll
+    // info!("- sleeping");
+    // tokio::time::sleep(Duration::from_secs(2)).await;
+    // info!("- sleep is done");
+    // timer.await;
 
+    // interval 时，每一秒都会 yield 给 timer，看看 timer 的 poll 方法如何处理
+    // 作为对比，下面的会 poll 多次
     let mut interval = tokio::time::interval(Duration::from_secs(1));
 
     info!("looping ...");
