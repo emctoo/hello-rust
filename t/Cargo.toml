@@ -12,7 +12,8 @@ log = "*"
 # pretty_env_logger = "*"
 
 tokio = { version = "1", features = ["full"] }
-# uuid = { version = "1.6.1", features = ["v4", "fast-rng", "macro-diagnostics"] }
+futures = "0.3"
+uuid = { version = "1.10", features = ["v4", "fast-rng", "macro-diagnostics"] }
 
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }

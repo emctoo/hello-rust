@@ -1,29 +1,32 @@
-#![allow(unused)]
+use future::FutureExt;
+use futures::future;
 use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
-use std::thread;
-use futures::future;
-use future::FutureExt;
-// use std::time::Duration;
 use tokio::time::Duration;
 
 // sleep 返回的 Sleep 是 Future
 use tokio::time::{sleep, Sleep};
 
-use log::info;
+use tracing::info;
 
 // #[tokio::main(flavor = "current_thread")]
 #[tokio::main]
 async fn main() {
-    std::env::set_var("RUST_LOG", "debug");
-    env_logger::init();
+    // std::env::set_var("RUST_LOG", "debug");
+    // env_logger::init();
+
+    tracing_subscriber::fmt::fmt()
+        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+        .init();
 
     // let rt = tokio::runtime::Builder::new_current_thread()
     //     .build()
     //     .unwrap();
+
     let s = sleep(Duration::from_secs(3));
     info!("s: {:?}", s);
+
     let result = s.await;
     info!("result: {:?}", result);
 
@@ -54,6 +57,7 @@ impl MyFuture {
 
 impl Future for MyFuture {
     type Output = ();
+
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         // sleep(Duration::from_secs(2));
         // Poll::Ready(())

@@ -5,10 +5,10 @@ use std::task::{Context, Poll};
 
 use clap::Parser;
 use futures::FutureExt;
-use log::info;
 use tokio::fs::File;
 use tokio::io::{AsyncRead, AsyncReadExt, ReadBuf};
-use tokio::time::{Duration, Instant, Sleep, sleep};
+use tokio::time::{sleep, Duration, Instant, Sleep};
+use tracing::info;
 
 #[derive(Parser)]
 enum Cli {
@@ -18,15 +18,27 @@ enum Cli {
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    std::env::set_var("RUST_LOG", "DEBUG");
-    env_logger::init();
+    // std::env::set_var("RUST_LOG", "DEBUG");
+    // env_logger::init();
+    tracing_subscriber::fmt::fmt()
+        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+        .init();
 
     let mut buf = vec![0; 1024 * 1024];
     let before = Instant::now();
 
     match Cli::parse() {
-        Cli::Default => File::open("/dev/urandom").await?.read_exact(&mut buf).await?,
-        Cli::Slow => SlowRead::new(File::open("/dev/urandom").await?).read_exact(&mut buf).await?,
+        Cli::Default => {
+            File::open("/dev/urandom")
+                .await?
+                .read_exact(&mut buf)
+                .await?
+        }
+        Cli::Slow => {
+            SlowRead::new(File::open("/dev/urandom").await?)
+                .read_exact(&mut buf)
+                .await?
+        }
     };
     info!("Read {} bytes in {:?}", buf.len(), before.elapsed());
     Ok(())
@@ -46,13 +58,22 @@ impl<R> SlowRead<R> {
     }
 }
 
-impl<R> AsyncRead for SlowRead<R> where R: AsyncRead {
-    fn poll_read(mut self: Pin<&mut Self>, cx: &mut Context<'_>, buf: &mut ReadBuf<'_>) -> Poll<Result<(), Error>> {
+impl<R> AsyncRead for SlowRead<R>
+where
+    R: AsyncRead,
+{
+    fn poll_read(
+        mut self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &mut ReadBuf<'_>,
+    ) -> Poll<Result<(), Error>> {
         // sleep for 1 second
         match self.sleep.poll_unpin(cx) {
             Poll::Ready(_) => {
                 info!("READY");
-                self.sleep.as_mut().reset(Instant::now().add(Duration::from_secs(1)));
+                self.sleep
+                    .as_mut()
+                    .reset(Instant::now().add(Duration::from_secs(1)));
                 self.reader.as_mut().poll_read(cx, buf)
             }
             Poll::Pending => {
@@ -62,3 +83,4 @@ impl<R> AsyncRead for SlowRead<R> where R: AsyncRead {
         }
     }
 }
+

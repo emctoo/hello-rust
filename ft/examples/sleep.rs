@@ -1,9 +1,11 @@
-use log::{debug, error, info, warn};
-use tokio::time::{Duration, sleep};
+use tokio::time::{sleep, Duration};
+use tracing::{debug, error, info, warn};
 
 #[tokio::main]
 async fn main() {
-    env_logger::builder().parse_filters("info").init();
+    tracing_subscriber::fmt::fmt()
+        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+        .init();
 
     warn!("hi");
     error!("some more errors");
@@ -15,3 +17,4 @@ async fn main() {
     info!("done");
     // select!
 }
+
