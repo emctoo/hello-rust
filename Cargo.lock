@@ -2626,14 +2626,13 @@ dependencies = [
  "anyhow",
  "chrono",
  "config",
+ "console-subscriber",
  "dotenvy",
- "env_logger",
- "log",
- "log4rs",
  "notify",
  "serde_json",
- "serde_yaml",
  "thiserror",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]

@@ -41,7 +41,8 @@ pub fn main() {
     // let sr2_pin = unsafe { Pin::new_unchecked(&mut sr2) };
     // sr2_pin.init();
 
-    let sr1_pin_mr = sr1_pin.get_mut();
+    // TODO:
+    // let sr1_pin_mr = sr1_pin.get_mut();
     // std::mem::swap(sr1_pin.get_mut(), sr2_pin.get_mut());
 
     // let mut sr1 = unsafe { Pin::new_unchecked(&mut SR::new("sr1")) };
