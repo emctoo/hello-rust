@@ -1,5 +1,5 @@
+use log::info;
 use std::pin::Pin;
-use tracing::info;
 
 #[derive(Debug)]
 struct Foo {
@@ -14,9 +14,12 @@ impl Foo {
 }
 
 fn main() {
-    tracing_subscriber::fmt::fmt()
-        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
-        .init();
+    // tracing_subscriber::fmt::fmt()
+    //     .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+    //     .init();
+    //
+
+    pretty_env_logger::init();
 
     // 先创建数据在堆上的 Box<Foo> 指针，然后在基于 Box<Foo> 创建 Pin 指针
     let box_foo: Box<Foo> = Box::new(Foo::new());
@@ -31,9 +34,3 @@ fn main() {
     info!("{:?}", foo_ref);
 }
 
-#[test]
-fn test_pinned_moving() {
-    let mut x: u8 = 42;
-    let pin_x = Pin::new(&mut x);
-    let y = pin_x;
-}

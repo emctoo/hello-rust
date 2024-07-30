@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use std::marker::PhantomPinned;
 use std::pin::Pin;
 
